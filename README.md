@@ -37,8 +37,8 @@ Number and name of feature: Server Creation
 
 Estimate of time needed to complete: 2 hours
 
-Start time: 4:30pm
+Start time: 4:30 pm
 
-Finish time: 9:15pm
+Finish time: 9:15 pm
 
 Actual time needed to complete: 3 hours 45 minutes 
