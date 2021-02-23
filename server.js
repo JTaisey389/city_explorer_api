@@ -22,6 +22,12 @@ const PORT = process.env.PORT // ASK TO SEE IF THIS IS SET UP RIGHT
 // LOCATION 1.0
 app.get('/location', handleGetLocation);
 function handleGetLocation(req, res){
+  // TODO: go to the internet and data
+  // we need a superagent: npm install -S superagent
+  // const URL = https:// key= the passkey and only your passkey
+  // superagent.get(url).then(stuffThatComesBack =>)
+  // CREATE A GLOBAL VARIABLE FOR YOUR API KEY AND REVISE THE CONST URL TO TEMPLATE LITERALS
+  // STORE THE PASSKEY INTO MY ENV 
   console.log(req.query);
   const dataFromTheFile = require('./data/location.json');
   const output = new Location(dataFromTheFile, req.query.city);
@@ -64,8 +70,9 @@ function Weather(data){
   this.time = data.valid_date;
 }
 
-
+// ============= Init Server ==============
 app.listen(PORT, () => {
   console.log(`Listening on ${PORT}`);
 })
 ;
+// Push//
