@@ -42,3 +42,46 @@ Start time: 4:30 pm
 Finish time: 9:15 pm
 
 Actual time needed to complete: 3 hours 45 minutes 
+
+<!-- 02/23/2021 -->
+
+Number and name of feature: Feature 03
+
+Estimate of time needed to complete: 1.5 hours
+
+Start time: 3:30 pm
+
+Finish time: 4:25 pm
+
+Actual time needed to complete: About an hour
+
+<!-- 02/24/2021 -->
+Number and name of feature: Feature 04
+
+Estimate of time needed to complete:
+
+Start time:
+
+Finish time:
+
+Actual time needed to complete:
+
+Number and name of feature:
+
+Estimate of time needed to complete:
+
+Start time: 
+
+Finish time:
+
+Actual time needed to complete:
+
+Number and name of feature:
+
+Estimate of time needed to complete: 
+
+Start time:
+
+Finish time:
+
+Actual time needed to complete:

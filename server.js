@@ -3,9 +3,6 @@
 // ============= Packages =========
 const express = require('express');
 const cors = require('cors'); // just works and we need it 
-const { compile } = require('proxy-addr');
-const { push } = require('methods');
-
 
 require('dotenv').config();
 
@@ -16,6 +13,12 @@ app.use(cors()); // enables local procresses to talk to the server
 
 const PORT = process.env.PORT // ASK TO SEE IF THIS IS SET UP RIGHT
 // console.log (process.env.server)
+//This is where you access your stored API key
+
+const WEATHER_API_KEY = process.env.WEATHER_API_KEY; 
+const LOCATIONS_API_KEY = process.env.LOCATIONS_API_KEY
+// const YELP_API_KEY = process.env.RESTAURANT_API_KEY
+// const PARKS_API_KEY = process.env.RESTAURANT_API_KEY
 
 // ============= Routes ==============
 
@@ -55,20 +58,28 @@ app.get('/weather', handleGetWeather);
 
 function handleGetWeather(req, res){
   console.log(req.query);
-  const output = [];
 
   const dataFromTheFile = require('./data/weather.json');
-  for (let i = 0; i < dataFromTheFile.data.length; i++) {
-    console.log(dataFromTheFile.data[i]);
-    output.push(new Weather(dataFromTheFile.data[i]));
+  // forEach(dataFromTheFile.data[i]);
+  function weatherOutput(day){
+    // console.log(weatherOutput);
+    return new Weather(day);
   }
-  res.send(output);
+  function Weather(data){
+    this.forecast = data.weather.description;
+    this.time = data.valid_date;
+  }
+  const weatherData = dataFromTheFile.data.map(weatherOutput);
+  // console.log(weatherData);
+  res.send(weatherData);
 }
 
-function Weather(data){
-  this.forecast = data.weather.desctiption;
-  this.time = data.valid_date;
-}
+// const require = data.map([]) => {
+// for (let i = 0; i < dataFromTheFile.data.length; i++) 
+//   handleGetWeather
+//   console.log(dataFromTheFile.data[i]);
+//   output.push(new Weather(dataFromTheFile.data[i]));
+
 
 // ============= Init Server ==============
 app.listen(PORT, () => {
