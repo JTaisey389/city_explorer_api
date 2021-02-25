@@ -1,7 +1,7 @@
 # Project Name
 
 **Author**: Jason
-**Version**: 1.1.0 (increment the patch/fix version number if you make more commits past your first submission)
+**Version**: 3.1.0 (increment the patch/fix version number if you make more commits past your first submission)
 
 ## Overview
 - I am creating a server for people to request information from and to spit that information back out once requested. 
@@ -56,19 +56,20 @@ Finish time: 4:25 pm
 Actual time needed to complete: About an hour
 
 <!-- 02/24/2021 -->
-Number and name of feature: Feature 04
+Number and name of feature: Feature 02 Locations
 
-Estimate of time needed to complete:
+Estimate of time needed to complete: 1 hour
 
-Start time:
+Start time: 4:15 pm 
 
-Finish time:
+Finish time: 5:55
 
-Actual time needed to complete:
+Actual time needed to complete: 40 min
 
-Number and name of feature:
 
-Estimate of time needed to complete:
+Number and name of feature: Feature 04 Parks
+
+Estimate of time needed to complete: 1 hour 
 
 Start time: 
 
@@ -76,9 +77,10 @@ Finish time:
 
 Actual time needed to complete:
 
-Number and name of feature:
 
-Estimate of time needed to complete: 
+Number and name of feature: Feature 04 Errors
+
+Estimate of time needed to complete: 1 hour
 
 Start time:
 

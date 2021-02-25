@@ -1,89 +1,113 @@
-'use strict'
+"use strict";
 
 // ============= Packages =========
-const express = require('express');
-const cors = require('cors'); // just works and we need it 
-
-require('dotenv').config();
+const express = require("express");
+const cors = require("cors"); // just works and we need it
+const superagent = require("superagent"); // TO-DO:
+const pg = require("pg");
+require("dotenv").config();
 
 // ============= App ==============
-
 const app = express(); //express() returns a fully ready to run server object
-app.use(cors()); // enables local procresses to talk to the server 
+app.use(cors()); // enables local procresses to talk to the server
+const client = new pg.Client(process.env.DATABASE_URL);
+client.on('error', err => console.log(err));
 
-const PORT = process.env.PORT // ASK TO SEE IF THIS IS SET UP RIGHT
+//============== PORT =============
+const PORT =  process.env.PORT || 3009;
+
+// app.listen(PORT, () => console.log(`up on PORT ${PORT}`));
+
 // console.log (process.env.server)
 //This is where you access your stored API key
 
-const WEATHER_API_KEY = process.env.WEATHER_API_KEY; 
-const LOCATIONS_API_KEY = process.env.LOCATIONS_API_KEY
-// const YELP_API_KEY = process.env.RESTAURANT_API_KEY
-// const PARKS_API_KEY = process.env.RESTAURANT_API_KEY
+// const YELP_API_KEY = process.env.RESTAURANT_API_KEY // TO-DO
+const WEATHER_KEY = process.env.WEATHER_API_KEY;
+const LOCATIONS_KEY = process.env.LOCATIONS_API_KEY;
+const PARKS_KEY = process.env.PARKS_API_KEY;
 
 // ============= Routes ==============
 
-// LOCATION 1.0
-app.get('/location', handleGetLocation);
-function handleGetLocation(req, res){
-  // TODO: go to the internet and data
-  // we need a superagent: npm install -S superagent
-  // const URL = https:// key= the passkey and only your passkey
-  // superagent.get(url).then(stuffThatComesBack =>)
-  // CREATE A GLOBAL VARIABLE FOR YOUR API KEY AND REVISE THE CONST URL TO TEMPLATE LITERALS
-  // STORE THE PASSKEY INTO MY ENV 
-  console.log(req.query);
-  const dataFromTheFile = require('./data/location.json');
-  const output = new Location(dataFromTheFile, req.query.city);
-  res.send(output);
 
+// ===== APP.get =====
+app.get("/location", GetLocation);
+app.get("/weather", GetWeather);
+app.get("/parks", GetParks);
+
+
+// ===== FUNCTIONS =====
+
+// ===== LOCATION =====
+function GetLocation(req, res) {
+  console.log(req.query);
+  const url = `https://us1.locationiq.com/v1/search.php?key=${LOCATIONS_KEY}&q=${req.query.city}&format=json`;
+  superagent.get(url).then (infoBack => {
+    console.log(infoBack);
+    let locationOne = new Location (infoBack.body, req.query.city);
+    res.send(locationOne);
+  })
+    .catch(error => {
+      console.log(error);
+    });
 }
-// LOCATION 1.1
-function Location (dataFromTheFile, cityName){
+
+function Location(fileData, cityName) {
   this.search_query = cityName;
-  this.formatted_query = dataFromTheFile[0].display_name;
-  this.latitude = dataFromTheFile[0].lat;
-  this.longitude =dataFromTheFile[0].lon;
+  this.formatted_query = fileData[0].display_name;
+  this.latitude = fileData[0].lat;
+  this.longitude = fileData[0].lon;
 }
+// LOCATION GTG
 
+// ===== GET PARKS =====
+function GetParks(req, res) {
+  const url = `https://developer.nps.gov/api/v1/parks?q=${req.query.search_query}&api_key=${PARKS_KEY}`;
+  superagent.get(url)
+    .then((result) => {//Then we get the results of the URL
+      // console.log(result.body);
+      const parks = result.body.data.map((singlePark) => new ParkList(singlePark));
+      res.send(parks);
+    });
+}
+// ===== PARK LISTS =====
+function ParkList(parkData){
+  this.name = parkData.fullName;
+  this.address = `${parkData.addresses[0].line1} ${parkData.addresses[0].city} ${parkData.addresses[0].stateCode} ${parkData.addresses[0].postalCode}`;
+  this.fee = parkData.entranceFees[0].cost;
+  this.description = parkData.description;
+  this.url = parkData.url;
+}
+// ===== PARK CONS FUNC =====
+// function ParkList(name, address, fee, description, url){
+//   this.name = name;
+//   this.address = address;
+//   this.fee = fee;
+//   this.description = description;
+//   this.url = url;
+// }
 
-// WEATHER 1.0
-app.get('/weather', handleGetWeather);
-
-// Inside the for loop is where we will call the weather constructor based off of (i)
-// When we call that thing we want to push that to the output which is an empty array
-// Outside of the loop, finish the request response cycle
-// Now we do a response.send for the array of objects that we created
-// clean up the weather constructor. TAKE A LOOK AT TRELLO, it is looking for two
-// Everything on the left hand side need to have the information from the TRELLO BOARD. It needs to be the exact charecter
-
-function handleGetWeather(req, res){
+// ===== WEATHER =====
+function GetWeather(req, res) {
   console.log(req.query);
-
-  const dataFromTheFile = require('./data/weather.json');
-  // forEach(dataFromTheFile.data[i]);
-  function weatherOutput(day){
-    // console.log(weatherOutput);
+  const url = `https://api.weatherbit.io/v2.0/forecast/daily?city=Raleigh,NC&key=${req.query.longitude}&lon=${req.query.longitude}${WEATHER_KEY}`;
+  
+  const fileData = require("./data/weather.json"); // Is this needed? 
+  
+  function weatherOutput(day) {
     return new Weather(day);
   }
-  function Weather(data){
+  function Weather(data) {
     this.forecast = data.weather.description;
     this.time = data.valid_date;
   }
-  const weatherData = dataFromTheFile.data.map(weatherOutput);
-  // console.log(weatherData);
+  const weatherData = fileData.data.map(weatherOutput);
   res.send(weatherData);
 }
 
-// const require = data.map([]) => {
-// for (let i = 0; i < dataFromTheFile.data.length; i++) 
-//   handleGetWeather
-//   console.log(dataFromTheFile.data[i]);
-//   output.push(new Weather(dataFromTheFile.data[i]));
-
-
 // ============= Init Server ==============
-app.listen(PORT, () => {
-  console.log(`Listening on ${PORT}`);
-})
-;
-// Push//
+client.connect()
+  .then(()=>{
+    app.listen(PORT, () => {
+      console.log(`Listening on ${PORT}`);
+    });
+  });
