@@ -77,7 +77,6 @@ Finish time: 8:30
 
 Actual time needed to complete: Two and a half hours
 
-
 Number and name of feature: Feature 04 Errors
 
 Estimate of time needed to complete: 1 hour

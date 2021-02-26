@@ -17,7 +17,7 @@ const PORT =  process.env.PORT || 3009;
 
 // ============= API KEYS =========
 const MOVIE_KEY = process.env.MOVIE_API_KEY;
-const YELP_KEY = process.env.YELP_API_KEY; // TO-DO
+const YELP_KEY = process.env.YELP_API_KEY;
 const WEATHER_KEY = process.env.WEATHER_API_KEY;
 const LOCATIONS_KEY = process.env.LOCATIONS_API_KEY;
 const PARKS_KEY = process.env.PARKS_API_KEY;
@@ -85,7 +85,7 @@ function GetWeather(req, res) {
 
 function GetYelp (req,res){
   const offset = (req.query.page -1) * 5;
-  const url = `https://api.yelp.com/v3/businesses/search?term=restaurant&limit=5&latitude=${req.query.latitude}&longitude=${req.query.longitude}&offset=${offset}`; 
+  const url = `https://api.yelp.com/v3/businesses/search?term=restaurant&limit=5&latitude=${req.query.latitude}&longitude=${req.query.longitude}&offset=${offset}`;
   superagent.get(url).set('authorization', `bearer ${YELP_KEY}`).then((output) => {
     console.log(output.body);
     const yelp = output.body.businesses.map((singleYelp) => new Yelp(singleYelp));
