@@ -83,9 +83,7 @@ function GetWeather(req, res) {
     });
 }
 
-// Yelp goes into a header for the key
 function GetYelp (req,res){
-  // console.log(req.query);
   const offset = (req.query.page -1) * 5;
   const url = `https://api.yelp.com/v3/businesses/search?term=restaurant&limit=5&latitude=${req.query.latitude}&longitude=${req.query.longitude}&offset=${offset}`; 
   superagent.get(url).set('authorization', `bearer ${YELP_KEY}`).then((output) => {
@@ -118,7 +116,7 @@ function Movie (object){
   this.overview = object.overview;
   this.average_votes = object.average_votes;
   this.total_votes = object.total_votes;
-  this.image_ural = object.image_ural;
+  this.image_url = `https://www.themoviedb.org/t/p/w600_and_h900_bestv2${object.poster_path}` || 'sorry no image';
   this.popularity = object.popularity;
   this.released_on = (object.release_date);
 }
