@@ -106,7 +106,7 @@ function getWeather(req, res) {
 function getYelp (req,res){
   const offset = (req.query.page -1) * 5;
   const url = `https://api.yelp.com/v3/businesses/search?term=restaurant&limit=5&latitude=${req.query.latitude}&longitude=${req.query.longitude}&offset=${offset}`;
-  superagent.get(url).set('authorization', `bearer ${YELP_KEY}`).then((output) => {
+  superagent.get(url).set('Authorization', `Bearer ${YELP_KEY}`).then((output) => {
     console.log(output.body);
     const yelp = output.body.businesses.map((singleYelp) => new Yelp(singleYelp));
     res.send(yelp);
